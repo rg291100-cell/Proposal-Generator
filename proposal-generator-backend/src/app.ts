@@ -7,9 +7,20 @@ import apiRoutes from './routes';
 
 const app: Application = express();
 
-// Security and utility middlewares
-app.use(helmet());
-app.use(cors()); // Enables CORS for React frontend connection
+app.use(helmet({
+    contentSecurityPolicy: false, // Needed for Puppeteer PDF rendering in some cases
+}));
+app.use(cors({
+    origin: [
+        'http://localhost:5173',
+        'http://localhost:3000',
+        'https://proposal-generator-busy.vercel.app',
+        /\.vercel\.app$/,   // Any vercel preview deployment
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
