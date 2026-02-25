@@ -3,6 +3,75 @@ import { TemplateService, TemplateData } from './template.service';
 import { PdfService } from './pdf.service';
 import { marked } from 'marked';
 
+/**
+ * Converts plain-text or markdown textarea input into clean HTML.
+ * - Lines starting with '-' or '*' become <li> items
+ * - Lines with 'Key: Value' (short value) become table rows
+ * - Groups consecutive bullet lines into <ul>
+ * - Remaining text becomes paragraphs via marked
+ */
+function smartFormat(text: string): string {
+    if (!text || !text.trim()) return '';
+
+    // Normalize line endings
+    const rawLines = text.replace(/\r\n/g, '\n').split('\n');
+
+    let html = '';
+    let bulletBuffer: string[] = [];
+
+    const flushBullets = () => {
+        if (bulletBuffer.length) {
+            html += '<ul>' + bulletBuffer.map(b => `<li>${b}</li>`).join('') + '</ul>';
+            bulletBuffer = [];
+        }
+    };
+
+    for (const rawLine of rawLines) {
+        const line = rawLine.trim();
+
+        if (!line) {
+            flushBullets();
+            continue;
+        }
+
+        // Explicit bullet point
+        if (/^[-*•]\s+/.test(line)) {
+            bulletBuffer.push(line.replace(/^[-*•]\s+/, ''));
+            continue;
+        }
+
+        // Numbered list (1. Item)
+        if (/^\d+\.\s+/.test(line)) {
+            flushBullets();
+            html += `<p><strong>${line}</strong></p>`;
+            continue;
+        }
+
+        // Key: Value pairs (likely a table or definition)
+        if (/^[A-Za-z ]+:\s*\S/.test(line) && line.length < 120) {
+            flushBullets();
+            const colonIdx = line.indexOf(':');
+            const key = line.substring(0, colonIdx).trim();
+            const value = line.substring(colonIdx + 1).trim();
+            html += `<div style="margin-bottom:6px;"><strong>${key}:</strong> ${value}</div>`;
+            continue;
+        }
+
+        // Short standalone lines (likely a list item without prefix)
+        if (line.length < 80 && !line.endsWith('.') && !line.endsWith('?')) {
+            bulletBuffer.push(line);
+            continue;
+        }
+
+        // Long descriptive text — render as paragraph
+        flushBullets();
+        html += `<p>${line}</p>`;
+    }
+
+    flushBullets();
+    return html || `<p>${text}</p>`;
+}
+
 export class ProposalService {
     private templateService = new TemplateService();
     private pdfService = new PdfService();
@@ -46,17 +115,20 @@ export class ProposalService {
             client_name: (proposal as any).clientName || proposal.project.client.name,
             project_name: proposal.project.name,
             current_date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-            company_details: proposal.project.client.company || 'ArgosMob Tech & AI',
-            features: (proposal as any).features ? marked.parse((proposal as any).features as string) as string : '',
+            company_details: 'ArgosMob Tech & AI', // Always the proposing company, never the client
+            features: smartFormat((proposal as any).features),
             intro: (proposal as any).intro ? marked.parse((proposal as any).intro as string) as string : '',
-            techStack: (proposal as any).techStack ? marked.parse((proposal as any).techStack as string) as string : '',
-            deliverables: (proposal as any).deliverables ? marked.parse((proposal as any).deliverables as string) as string : '',
-            timeline: (proposal as any).timeline ? marked.parse((proposal as any).timeline as string) as string : '',
+            techStack: smartFormat((proposal as any).techStack),
+            deliverables: smartFormat((proposal as any).deliverables),
+            timeline: smartFormat((proposal as any).timeline),
             changeRequest: (proposal as any).changeRequest ? marked.parse((proposal as any).changeRequest as string) as string : '',
             cost_table: costTable,
             grand_total: grandTotal,
-            amc_details: 'The standard AMC incorporates 12 months ongoing support beginning from deployment sign-off.',
-            sections: sections,
+            amc_details: '',
+            // Filter out 'Introduction' sections when intro text is provided, to avoid duplication
+            sections: (proposal as any).intro
+                ? sections.filter((s: any) => s.name.toLowerCase() !== 'introduction')
+                : sections,
         };
 
         // Render HTML & generate PDF
