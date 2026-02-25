@@ -18,10 +18,11 @@ function smartFormat(text: string): string {
 
     let html = '';
     let bulletBuffer: string[] = [];
+    let inNumberedSection = false;
 
     const flushBullets = () => {
         if (bulletBuffer.length) {
-            html += '<ul>' + bulletBuffer.map(b => `<li>${b}</li>`).join('') + '</ul>';
+            html += '<ul class="feat-list">' + bulletBuffer.map(b => `<li>${b}</li>`).join('') + '</ul>';
             bulletBuffer = [];
         }
     };
@@ -30,42 +31,47 @@ function smartFormat(text: string): string {
         const line = rawLine.trim();
 
         if (!line) {
+            // Blank lines only flush bullets between sections
             flushBullets();
             continue;
         }
 
-        // Explicit bullet point
+        // ── NUMBERED HEADING: "1. SECTION NAME", "2. Another Section" ──
+        // Matches optional prefix spaces, a number, a dot, and at least one non-digit char after
+        const numberedMatch = line.match(/^(\d+)\.\s+(.+)/);
+        if (numberedMatch) {
+            flushBullets();
+            inNumberedSection = true;
+            html += `<div class="feat-heading">${line}</div>`;
+            continue;
+        }
+
+        // ── EXPLICIT BULLET: lines starting with - * • ──
         if (/^[-*•]\s+/.test(line)) {
             bulletBuffer.push(line.replace(/^[-*•]\s+/, ''));
+            inNumberedSection = false;
             continue;
         }
 
-        // Numbered list (1. Item)
-        if (/^\d+\.\s+/.test(line)) {
+        // ── KEY: VALUE pairs (like "Frontend: React Native") ──
+        const kvMatch = line.match(/^([A-Za-z][A-Za-z\s/&]+):\s+(.+)/);
+        if (kvMatch && !inNumberedSection && line.length < 120) {
             flushBullets();
-            html += `<p><strong>${line}</strong></p>`;
+            html += `<div class="kv-row"><span class="kv-key">${kvMatch[1]}:</span> <span>${kvMatch[2]}</span></div>`;
             continue;
         }
 
-        // Key: Value pairs (likely a table or definition)
-        if (/^[A-Za-z ]+:\s*\S/.test(line) && line.length < 120) {
-            flushBullets();
-            const colonIdx = line.indexOf(':');
-            const key = line.substring(0, colonIdx).trim();
-            const value = line.substring(colonIdx + 1).trim();
-            html += `<div style="margin-bottom:6px;"><strong>${key}:</strong> ${value}</div>`;
-            continue;
-        }
-
-        // Short standalone lines (likely a list item without prefix)
-        if (line.length < 80 && !line.endsWith('.') && !line.endsWith('?')) {
+        // ── Short standalone lines → auto bullet ──
+        // But NOT if they look like they could be a key-value without value
+        if (line.length < 100 && !line.endsWith(':') && !/^(Phase|Step|Stage)\s*\d/.test(line)) {
             bulletBuffer.push(line);
             continue;
         }
 
-        // Long descriptive text — render as paragraph
+        // ── Long descriptive text → paragraph ──
         flushBullets();
         html += `<p>${line}</p>`;
+        inNumberedSection = false;
     }
 
     flushBullets();
@@ -113,11 +119,15 @@ export class ProposalService {
 
         const data: TemplateData = {
             client_name: (proposal as any).clientName || proposal.project.client.name,
-            project_name: proposal.project.name,
-            current_date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-            company_details: 'ArgosMob Tech & AI', // Always the proposing company, never the client
+            project_name: (proposal as any).title || proposal.project.name,
+            current_date: (proposal as any).proposalDate ||
+                new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+            company_details: 'ArgosMob Tech & AI',
             features: smartFormat((proposal as any).features),
             intro: (proposal as any).intro ? marked.parse((proposal as any).intro as string) as string : '',
+            aboutCompany: (proposal as any).aboutCompany
+                ? marked.parse((proposal as any).aboutCompany as string) as string
+                : undefined,
             techStack: smartFormat((proposal as any).techStack),
             deliverables: smartFormat((proposal as any).deliverables),
             timeline: smartFormat((proposal as any).timeline),
@@ -125,7 +135,6 @@ export class ProposalService {
             cost_table: costTable,
             grand_total: grandTotal,
             amc_details: '',
-            // Filter out 'Introduction' sections when intro text is provided, to avoid duplication
             sections: (proposal as any).intro
                 ? sections.filter((s: any) => s.name.toLowerCase() !== 'introduction')
                 : sections,

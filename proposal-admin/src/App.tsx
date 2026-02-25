@@ -12,13 +12,15 @@ export default function App() {
     const [draftProposal, setDraftProposal] = useState<any>({
         title: '',
         clientName: '',
+        proposalDate: '',
         intro: '',
         features: '',
         techStack: '',
         deliverables: '',
         timeline: '',
         changeRequest: '',
-        projectId: '', // Hardcoded fallback for now if no project system on UI
+        aboutCompany: '',
+        projectId: '',
         templateId: '',
         sections: [],
         costItems: []
@@ -100,15 +102,17 @@ export default function App() {
 
             // Let's assume we skip Project creation if API isn't exactly built, but to be compliant we should pass a UUID.
             const payload = {
-                title: draftProposal.title || 'Test Proposal',
+                title: draftProposal.title || 'Untitled Proposal',
                 clientName: draftProposal.clientName,
+                proposalDate: draftProposal.proposalDate,
                 intro: draftProposal.intro,
                 features: draftProposal.features,
                 techStack: draftProposal.techStack,
                 deliverables: draftProposal.deliverables,
                 timeline: draftProposal.timeline,
                 changeRequest: draftProposal.changeRequest,
-                projectId: '50690296-e3c8-4da0-91eb-e554e0a5ff94', // Real UUID from Supabase Seed
+                aboutCompany: draftProposal.aboutCompany,
+                projectId: '50690296-e3c8-4da0-91eb-e554e0a5ff94',
                 templateId: draftProposal.templateId,
                 sections: draftProposal.sections.map((s: any) => ({
                     sectionId: s.sectionId,
@@ -261,13 +265,38 @@ export default function App() {
 
                                     <div className="space-y-6">
                                         <div>
-                                            <label className="block text-sm font-medium text-slate-700 mb-1">Company / Client Name <span className="text-slate-400 font-normal">(Overrides CRM DB value)</span></label>
+                                            <label className="block text-sm font-medium text-slate-700 mb-1">Proposal Title / Project Name <span className="text-slate-400 font-normal">(Shown on cover page)</span></label>
                                             <input
                                                 className="w-full border-slate-200 border rounded-lg p-3 outline-none focus:border-blue-500 text-slate-700"
-                                                placeholder="e.g. Globex Corporation"
-                                                value={draftProposal.clientName}
-                                                onChange={(e) => setDraftProposal({ ...draftProposal, clientName: e.target.value })}
+                                                placeholder="e.g. Grocery App Development 2026"
+                                                value={draftProposal.title}
+                                                onChange={(e) => setDraftProposal({ ...draftProposal, title: e.target.value })}
                                             />
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-6">
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 mb-1">Client / Company Name <span className="text-slate-400 font-normal">(Cover &amp; sign-off)</span></label>
+                                                <input
+                                                    className="w-full border-slate-200 border rounded-lg p-3 outline-none focus:border-blue-500 text-slate-700"
+                                                    placeholder="e.g. Indgrocart Pvt. Ltd."
+                                                    value={draftProposal.clientName}
+                                                    onChange={(e) => setDraftProposal({ ...draftProposal, clientName: e.target.value })}
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 mb-1">Proposal Date <span className="text-slate-400 font-normal">(Defaults to today)</span></label>
+                                                <input
+                                                    type="date"
+                                                    className="w-full border-slate-200 border rounded-lg p-3 outline-none focus:border-blue-500 text-slate-700"
+                                                    value={draftProposal.proposalDate}
+                                                    onChange={(e) => {
+                                                        const d = new Date(e.target.value);
+                                                        const formatted = d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                                                        setDraftProposal({ ...draftProposal, proposalDate: formatted });
+                                                    }}
+                                                />
+                                            </div>
                                         </div>
 
                                         <div>

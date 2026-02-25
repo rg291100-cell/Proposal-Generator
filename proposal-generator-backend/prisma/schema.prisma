@@ -77,6 +77,8 @@ model Proposal {
   sections   ProposalSection[]
   costItems  CostItem[]
   clientName  String?
+  proposalDate String?
+  aboutCompany String?           @db.Text
   intro      String?           @db.Text
   techStack  String?           @db.Text
   deliverables String?         @db.Text

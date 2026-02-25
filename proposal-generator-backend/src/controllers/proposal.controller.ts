@@ -14,6 +14,8 @@ export const createProposal = async (req: Request, res: Response, next: NextFunc
                 title: data.title,
                 features: data.features,
                 clientName: data.clientName,
+                proposalDate: data.proposalDate,
+                aboutCompany: data.aboutCompany,
                 intro: data.intro,
                 techStack: data.techStack,
                 deliverables: data.deliverables,

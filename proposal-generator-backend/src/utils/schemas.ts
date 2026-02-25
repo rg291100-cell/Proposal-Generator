@@ -42,6 +42,8 @@ export const CreateProposalSchema = z.object({
     ).optional(),
     features: z.string().optional(),
     clientName: z.string().optional(),
+    proposalDate: z.string().optional(),
+    aboutCompany: z.string().optional(),
     intro: z.string().optional(),
     techStack: z.string().optional(),
     deliverables: z.string().optional(),

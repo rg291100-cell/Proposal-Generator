@@ -15,6 +15,8 @@ export interface TemplateData {
     company_details?: string;
     features?: string;
     clientName?: string;
+    proposalDate?: string;
+    aboutCompany?: string;
     intro?: string;
     techStack?: string;
     deliverables?: string;
