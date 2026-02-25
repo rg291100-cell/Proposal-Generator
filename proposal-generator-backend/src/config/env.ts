@@ -1,15 +1,9 @@
 import dotenv from 'dotenv';
-import path from 'path';
 
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+// Load .env for local development. On Vercel, env vars are injected by the platform.
+dotenv.config();
 
-interface EnvConfig {
-    port: number;
-    nodeEnv: string;
-    databaseUrl: string;
-}
-
-export const env: EnvConfig = {
+export const env = {
     port: parseInt(process.env.PORT || '5000', 10),
     nodeEnv: process.env.NODE_ENV || 'development',
     databaseUrl: process.env.DATABASE_URL || '',

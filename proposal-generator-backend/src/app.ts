@@ -1,3 +1,4 @@
+import 'dotenv/config'; // MUST be first — loads DATABASE_URL before any other module
 import express, { Application } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
