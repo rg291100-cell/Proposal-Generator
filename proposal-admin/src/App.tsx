@@ -92,7 +92,7 @@ export default function App() {
             // Let's assume we skip Project creation if API isn't exactly built, but to be compliant we should pass a UUID.
             const payload = {
                 title: draftProposal.title || 'Test Proposal',
-                projectId: 'b52a1ba2-613b-4861-a08b-6f4e66cce82b', // FAKE UUID for now since no UI project mapping
+                projectId: '50690296-e3c8-4da0-91eb-e554e0a5ff94', // Real UUID from Supabase Seed
                 templateId: draftProposal.templateId,
                 sections: draftProposal.sections.map((s: any) => ({
                     sectionId: s.sectionId,

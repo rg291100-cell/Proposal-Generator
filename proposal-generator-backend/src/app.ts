@@ -16,6 +16,11 @@ app.use(express.urlencoded({ extended: true }));
 // Custom middlewares
 app.use(loggerMiddleware);
 
+// Root Route (to avoid Cannot GET / on Vercel)
+app.get('/', (req, res) => {
+    res.send('ArgosMob Proposal Generator API is running!');
+});
+
 // API Routes
 app.use('/api', apiRoutes);
 
