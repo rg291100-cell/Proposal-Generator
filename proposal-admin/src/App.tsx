@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Plus, Save, FileText, CheckCircle2, ChevronRight, Download } from 'lucide-react';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+
 export default function App() {
     const [activeTab, setActiveTab] = useState('clients');
     const [clients, setClients] = useState<any[]>([]);
@@ -19,15 +21,15 @@ export default function App() {
 
     useEffect(() => {
         // Fetch basic metadata
-        fetch('http://localhost:5000/api/clients')
+        fetch(`${API_BASE_URL}/clients`)
             .then(r => r.json())
             .then(d => setClients(d));
 
-        fetch('http://localhost:5000/api/templates')
+        fetch(`${API_BASE_URL}/templates`)
             .then(r => r.json())
             .then(d => setTemplates(d));
 
-        fetch('http://localhost:5000/api/sections')
+        fetch(`${API_BASE_URL}/sections`)
             .then(r => r.json())
             .then(d => setSections(d));
     }, []);
@@ -82,7 +84,7 @@ export default function App() {
     const generateProposal = async () => {
         try {
             // 1. Create Project implicitly for a client (Hack for UI simplicity)
-            const projectRes = await fetch('http://localhost:5000/api/projects', {
+            const projectRes = await fetch(`${API_BASE_URL}/projects`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name: draftProposal.title || 'New Project', clientId: draftProposal.clientId })
@@ -106,7 +108,7 @@ export default function App() {
                 }))
             };
 
-            const res = await fetch('http://localhost:5000/api/proposals', {
+            const res = await fetch(`${API_BASE_URL}/proposals`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -114,7 +116,7 @@ export default function App() {
             const resultingProposal = await res.json();
 
             // Generate PDF
-            const pdfRes = await fetch(`http://localhost:5000/api/proposals/${resultingProposal.id}/generate`, {
+            const pdfRes = await fetch(`${API_BASE_URL}/proposals/${resultingProposal.id}/generate`, {
                 method: 'POST'
             });
             const finalDoc = await pdfRes.json();
