@@ -72,6 +72,7 @@ model Proposal {
   templateId String
   template   ProposalTemplate  @relation(fields: [templateId], references: [id])
   status     String            @default("draft")
+  features   String?           @db.Text
   pdfPath    String?
   sections   ProposalSection[]
   costItems  CostItem[]

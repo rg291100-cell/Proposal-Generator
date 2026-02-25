@@ -40,6 +40,7 @@ export const CreateProposalSchema = z.object({
             content: z.string().optional(),
         })
     ).optional(),
+    features: z.string().optional(),
     costItems: z.array(
         z.object({
             description: z.string(),

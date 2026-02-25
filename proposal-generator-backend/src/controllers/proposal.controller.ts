@@ -12,6 +12,7 @@ export const createProposal = async (req: Request, res: Response, next: NextFunc
         const proposal = await prisma.proposal.create({
             data: {
                 title: data.title,
+                features: data.features,
                 projectId: data.projectId,
                 templateId: data.templateId,
                 sections: {

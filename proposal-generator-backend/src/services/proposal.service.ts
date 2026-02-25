@@ -6,7 +6,7 @@ export class ProposalService {
     private templateService = new TemplateService();
     private pdfService = new PdfService();
 
-    async generateProposal(proposalId: string): Promise<{ pdfPath: string; jsonPreview: TemplateData }> {
+    async generateProposal(proposalId: string): Promise<{ base64Pdf: string; jsonPreview: TemplateData }> {
         const proposal = await prisma.proposal.findUnique({
             where: { id: proposalId },
             include: {
@@ -46,6 +46,7 @@ export class ProposalService {
             project_name: proposal.project.name,
             current_date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
             company_details: proposal.project.client.company || 'ArgosMob Tech & AI',
+            features: (proposal as any).features || '',
             cost_table: costTable,
             grand_total: grandTotal,
             amc_details: 'The standard AMC incorporates 12 months ongoing support beginning from deployment sign-off.',
@@ -54,14 +55,14 @@ export class ProposalService {
 
         // Render HTML & generate PDF
         const html = await this.templateService.renderHtml('main', data);
-        const { pdfPath } = await this.pdfService.generatePdf(html, proposal.id);
+        const { base64Pdf } = await this.pdfService.generatePdf(html, proposal.id);
 
-        // Save generated PDF path to db
+        // Save generated status to db (we drop pdfPath tracking for active serverless)
         await prisma.proposal.update({
             where: { id: proposal.id },
-            data: { pdfPath, status: 'generated' },
+            data: { status: 'generated' },
         });
 
-        return { pdfPath, jsonPreview: data };
+        return { base64Pdf, jsonPreview: data };
     }
 }

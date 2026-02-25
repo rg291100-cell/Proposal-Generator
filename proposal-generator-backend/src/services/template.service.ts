@@ -12,6 +12,7 @@ export interface TemplateData {
     current_date?: string;
     amc_details?: string;
     company_details?: string;
+    features?: string;
     sections: Array<{
         name: string;
         enabled: boolean;

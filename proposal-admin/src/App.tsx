@@ -11,6 +11,7 @@ export default function App() {
 
     const [draftProposal, setDraftProposal] = useState<any>({
         title: '',
+        features: '',
         projectId: '', // Hardcoded fallback for now if no project system on UI
         templateId: '',
         sections: [],
@@ -94,6 +95,7 @@ export default function App() {
             // Let's assume we skip Project creation if API isn't exactly built, but to be compliant we should pass a UUID.
             const payload = {
                 title: draftProposal.title || 'Test Proposal',
+                features: draftProposal.features,
                 projectId: '50690296-e3c8-4da0-91eb-e554e0a5ff94', // Real UUID from Supabase Seed
                 templateId: draftProposal.templateId,
                 sections: draftProposal.sections.map((s: any) => ({
@@ -120,7 +122,19 @@ export default function App() {
                 method: 'POST'
             });
             const finalDoc = await pdfRes.json();
-            setGeneratedPdf(finalDoc.pdfPath);
+
+            if (finalDoc.base64Pdf) {
+                const linkSource = `data:application/pdf;base64,${finalDoc.base64Pdf}`;
+                const downloadLink = document.createElement("a");
+                downloadLink.href = linkSource;
+                downloadLink.download = `Proposal_${resultingProposal.id}.pdf`;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+                setGeneratedPdf('Downloaded successfully!');
+            } else if (finalDoc.pdfPath) {
+                setGeneratedPdf(finalDoc.pdfPath); // local fallback
+            }
 
         } catch (e) {
             console.error(e);
@@ -225,12 +239,28 @@ export default function App() {
                                 </div>
                             )}
 
-                            {/* Step 3: Costing */}
+                            {/* Step 3: Features */}
+                            {draftProposal.templateId && (
+                                <div className="mb-8 animate-in slide-in-from-bottom-2 fade-in duration-300">
+                                    <h3 className="text-lg font-semibold mb-4 text-slate-800 flex items-center gap-2">
+                                        <span className="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-sm">3</span>
+                                        Features &amp; Functionalities
+                                    </h3>
+                                    <textarea
+                                        className="w-full border-slate-200 border rounded-lg p-4 min-h-[12rem] outline-none focus:border-blue-500 text-slate-700 resize-y"
+                                        placeholder="Type or paste the comprehensive features list here..."
+                                        value={draftProposal.features}
+                                        onChange={(e) => setDraftProposal({ ...draftProposal, features: e.target.value })}
+                                    />
+                                </div>
+                            )}
+
+                            {/* Step 4: Costing */}
                             {draftProposal.templateId && (
                                 <div className="mb-8 animate-in slide-in-from-bottom-2 fade-in duration-300">
                                     <div className="flex justify-between items-center mb-4">
                                         <h3 className="text-lg font-semibold text-slate-800 flex items-center gap-2">
-                                            <span className="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-sm">3</span>
+                                            <span className="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-sm">4</span>
                                             Costing Table
                                         </h3>
                                         <button onClick={addCostRow} className="flex items-center gap-1 text-sm bg-slate-900 text-white px-3 py-1.5 rounded-md hover:bg-slate-800">
@@ -244,8 +274,8 @@ export default function App() {
                                                 <tr>
                                                     <th className="px-4 py-3">Description</th>
                                                     <th className="px-4 py-3 w-24">Qty</th>
-                                                    <th className="px-4 py-3 w-32">Unit Price ($)</th>
-                                                    <th className="px-4 py-3 w-32">Total ($)</th>
+                                                    <th className="px-4 py-3 w-32">Unit Price (₹)</th>
+                                                    <th className="px-4 py-3 w-32">Total (₹)</th>
                                                     <th className="px-4 py-3 w-16"></th>
                                                 </tr>
                                             </thead>
@@ -262,7 +292,7 @@ export default function App() {
                                                             <input type="number" className="w-full border-slate-200 border rounded-md px-3 py-2 outline-none focus:border-blue-500" value={item.unitPrice} onChange={e => updateCostRow(i, 'unitPrice', e.target.value)} />
                                                         </td>
                                                         <td className="px-4 py-2 font-medium text-slate-800">
-                                                            ${(item.quantity * item.unitPrice).toLocaleString()}
+                                                            ₹{(item.quantity * item.unitPrice).toLocaleString('en-IN')}
                                                         </td>
                                                         <td className="px-4 py-2">
                                                             <button onClick={() => removeCostRow(i)} className="text-red-500 hover:text-red-700 font-bold px-2 py-1">&times;</button>
@@ -278,11 +308,11 @@ export default function App() {
                                 </div>
                             )}
 
-                            {/* Step 4: Preview */}
+                            {/* Step 5: Preview */}
                             {draftProposal.templateId && (
                                 <div className="mb-8 animate-in slide-in-from-bottom-2 fade-in duration-300">
                                     <h3 className="text-lg font-semibold mb-4 text-slate-800 flex items-center gap-2">
-                                        <span className="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-sm">4</span>
+                                        <span className="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-sm">5</span>
                                         Preview Payload (JSON)
                                     </h3>
                                     <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 overflow-x-auto">

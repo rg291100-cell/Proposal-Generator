@@ -281,6 +281,14 @@
   {{/if}}
   {{/each}}
 
+  <!-- Features Section -->
+  {{#if features}}
+  <div class="numbered-section page-break">
+    <h1 class="section-title">Features &amp; Functionalities</h1>
+    <div class="section-content" style="white-space: pre-wrap;">{{features}}</div>
+  </div>
+  {{/if}}
+
   <!-- Cost Table -->
   {{#if cost_table.length}}
   <div class="numbered-section page-break">
@@ -299,13 +307,13 @@
         <tr>
           <td>{{description}}</td>
           <td class="right">{{quantity}}</td>
-          <td class="right">${{unitPrice}}</td>
-          <td class="right">${{total}}</td>
+          <td class="right">₹{{unitPrice}}</td>
+          <td class="right">₹{{total}}</td>
         </tr>
         {{/each}}
         <tr class="cost-total-row">
           <td colspan="3" class="right">Grand Total:</td>
-          <td class="right">${{grand_total}}</td>
+          <td class="right">₹{{grand_total}}</td>
         </tr>
       </tbody>
     </table>
