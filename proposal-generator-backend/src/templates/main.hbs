@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Proposal - {{project_name}}</title>
+  <style>
+    :root {
+      --primary-color: #0d2a5a;
+      --secondary-color: #1f50a8;
+      --accent-color: #d1b463;
+      --text-color: #333;
+      --bg-color: #fff;
+      --border-color: #e2e8f0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-size: 11pt;
+      line-height: 1.6;
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+      /* CSS Counters for section numbering */
+      counter-reset: h1counter;
+    }
+
+    /* Page Breaks */
+    .page-break {
+      page-break-before: always;
+      break-before: page;
+    }
+
+    /* Cover Page */
+    .cover-page {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 80px;
+      background-color: var(--primary-color);
+      color: white;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    .cover-page::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 25px;
+      background-color: var(--accent-color);
+    }
+
+    .cover-title {
+      font-size: 38pt;
+      font-weight: 800;
+      margin-bottom: 20px;
+      line-height: 1.2;
+      border-left: 8px solid var(--accent-color);
+      padding-left: 20px;
+    }
+
+    .cover-subtitle {
+      font-size: 18pt;
+      font-weight: 300;
+      margin-bottom: 50px;
+      opacity: 0.9;
+    }
+
+    .cover-details {
+      margin-top: auto;
+      font-size: 12pt;
+      line-height: 1.8;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      padding-top: 20px;
+      width: 100%;
+    }
+
+    .cover-details strong {
+      color: var(--accent-color);
+      font-weight: 600;
+    }
+
+    /* Typography */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: var(--primary-color);
+      margin-top: 0;
+    }
+
+    /* Section Numbering */
+    .numbered-section {
+      counter-reset: h2counter;
+      margin-bottom: 40px;
+    }
+
+    .numbered-section .section-title {
+      font-size: 24pt;
+      font-weight: 700;
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      color: var(--primary-color);
+    }
+
+    .numbered-section .section-title::before {
+      counter-increment: h1counter;
+      content: counter(h1counter) ". ";
+      color: var(--accent-color);
+    }
+
+    .numbered-section h2::before {
+      counter-increment: h2counter;
+      content: counter(h1counter) "." counter(h2counter) " ";
+      color: var(--secondary-color);
+    }
+
+    .numbered-section h2 {
+      font-size: 16pt;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      counter-reset: h3counter;
+    }
+
+    .numbered-section h3::before {
+      counter-increment: h3counter;
+      content: counter(h1counter) "." counter(h2counter) "." counter(h3counter) " ";
+    }
+
+    .numbered-section h3 {
+      font-size: 14pt;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    /* Content styling */
+    p {
+      margin-bottom: 15px;
+      text-align: justify;
+    }
+
+    ul,
+    ol {
+      margin-bottom: 20px;
+      padding-left: 25px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    /* Corporate Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 25px 0;
+      font-size: 10.5pt;
+    }
+
+    table th,
+    table td {
+      border: 1px solid var(--border-color);
+      padding: 12px 15px;
+      text-align: left;
+    }
+
+    table th {
+      background-color: var(--primary-color);
+      color: white;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 9pt;
+      letter-spacing: 0.5px;
+    }
+
+    table tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    .cost-table th.right,
+    .cost-table td.right {
+      text-align: right;
+    }
+
+    .cost-total-row th,
+    .cost-total-row td {
+      background-color: #edf2f7 !important;
+      font-weight: bold;
+      font-size: 12pt;
+      color: var(--primary-color);
+      border-top: 2px solid var(--primary-color);
+    }
+
+    /* Table of Contents */
+    .toc {
+      margin-top: 40px;
+    }
+
+    .toc-title {
+      font-size: 24pt;
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 10px;
+      margin-bottom: 30px;
+    }
+
+    .toc-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 12pt;
+      font-weight: 500;
+    }
+
+    .toc-item::after {
+      content: "";
+      border-bottom: 1px dotted #ccc;
+      flex-grow: 1;
+      margin: 0 15px;
+      position: relative;
+      top: -6px;
+    }
+
+    .toc-page {
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Cover Page -->
+  <div class="cover-page">
+    <div>
+      <div style="margin-bottom: 30px;">
+        <img
+          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMDAgMjAwIiB3aWR0aD0iMTUwIiBoZWlnaHQ9IjEwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InRvcEV5ZWxpZCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMWIzZjZiIiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjMwJSIgc3RvcC1jb2xvcj0iIzJkNmE5YSIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNmJjZGVlIiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYm90dG9tRXllbGlkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMxYjNmNmIiIC8+CiAgICAgIDxzdG9wIG9mZnNldD0iMzAlIiBzdG9wLWNvbG9yPSIjMmQ2YTlhIiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM2YmNkZWUiIC8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPHJhZGlhbEdyYWRpZW50IGlkPSJpcmlzIiBjeD0iNTAlIiBjeT0iNTAlIiByPSI1MCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMiUiIHN0b3AtY29sb3I9IiNlM2YwZjciIC8+CiAgICAgIDxzdG9wIG9mZnNldD0iMjUlIiBzdG9wLWNvbG9yPSIjODBjNmU4IiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjYwJSIgc3RvcC1jb2xvcj0iIzQ2ODJiNCIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI5NSUiIHN0b3AtY29sb3I9IiMxYTQyNmYiIC8+CiAgICA8L3JhZGlhbEdyYWRpZW50PgogIDwvZGVmcz4KCiAgPCEtLSBUb3AgRXllbGlkIC0tPgogIDxwYXRoIGQ9Ik0gNzAgOTUgQyAxMDAgNTAsIDIwMCA2NSwgMjcwIDcwIEMgMjMwIDg1LCAxNzAgODAsIDE0MCA3MCBDIDExMCA2MCwgOTAgNzAsIDcwIDk1IFoiIGZpbGw9InVybCgjdG9wRXllbGlkKSIgLz4KCiAgPCEtLSBCb3R0b20gRXllbGlkIC0tPgogIDxwYXRoIGQ9Ik0gMzAgMTM1IEMgNjAgMTEwLCAxMTAgMTMwLCAyMDAgMTE1IEMgMTcwIDE0NSwgMTEwIDE1MCwgNjAgMTQwIEMgNDUgMTM3LCAzNSAxMzUsIDMwIDEzNSBaIiBmaWxsPSJ1cmwoI2JvdHRvbUV5ZWxpZCkiIC8+CgogIDwhLS0gSXJpcyAmIFB1cGlsIC0tPgogIDxjaXJjbGUgY3g9IjE0MCIgY3k9IjEwMCIgcj0iNDAiIGZpbGw9InVybCgjaXJpcykiIC8+CiAgPGNpcmNsZSBjeD0iMTQwIiBjeT0iMTAwIiByPSIxNCIgZmlsbD0iIzAwMDAwMCIgLz4KPC9zdmc+Cg=="
+          style="width:120px; height:auto; background: rgba(255,255,255,0.9); padding:10px; border-radius:10px;" />
+      </div>
+      <div class="cover-title">Formal<br />Proposal</div>
+      <div class="cover-subtitle">Prepared for {{client_name}}</div>
+    </div>
+
+    <div class="cover-details">
+      <table style="border:none; margin:0; width:auto; border-collapse: separate; border-spacing: 0 10px;">
+        <tr>
+          <td style="border:none; padding:0 30px 0 0; color:#fff;"><strong>Project:</strong></td>
+          <td style="border:none; padding:0; color:#fff;">{{project_name}}</td>
+        </tr>
+        <tr>
+          <td style="border:none; padding:0 30px 0 0; color:#fff;"><strong>Date:</strong></td>
+          <td style="border:none; padding:0; color:#fff;">{{current_date}}</td>
+        </tr>
+        <tr>
+          <td style="border:none; padding:0 30px 0 0; color:#fff;"><strong>Prepared By:</strong></td>
+          <td style="border:none; padding:0; color:#fff;">{{company_details}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- Sections -->
+  {{#each sections}}
+  {{#if enabled}}
+  <div class="numbered-section {{#if @first}} {{else}} page-break {{/if}}">
+    <h1 class="section-title">{{name}}</h1>
+    <div class="section-content">
+      {{{content}}}
+    </div>
+  </div>
+  {{/if}}
+  {{/each}}
+
+  <!-- Cost Table -->
+  {{#if cost_table.length}}
+  <div class="numbered-section page-break">
+    <h1 class="section-title">Cost Estimation</h1>
+    <table class="cost-table">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th class="right" width="10%">Qty</th>
+          <th class="right" width="20%">Unit Price</th>
+          <th class="right" width="20%">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each cost_table}}
+        <tr>
+          <td>{{description}}</td>
+          <td class="right">{{quantity}}</td>
+          <td class="right">${{unitPrice}}</td>
+          <td class="right">${{total}}</td>
+        </tr>
+        {{/each}}
+        <tr class="cost-total-row">
+          <td colspan="3" class="right">Grand Total:</td>
+          <td class="right">${{grand_total}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  {{/if}}
+
+  <!-- AMC Details -->
+  {{#if amc_details}}
+  <div class="numbered-section page-break">
+    <h1 class="section-title">AMC Details</h1>
+    <div class="section-content">
+      {{{amc_details}}}
+    </div>
+  </div>
+  {{/if}}
+
+</body>
+
+</html>

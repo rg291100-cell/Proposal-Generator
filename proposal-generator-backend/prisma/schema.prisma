@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Client {
+  id        String     @id @default(uuid())
+  name      String
+  email     String?
+  company   String?
+  projects  Project[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  deletedAt DateTime?
+}
+
+model Project {
+  id        String     @id @default(uuid())
+  name      String
+  clientId  String
+  client    Client     @relation(fields: [clientId], references: [id])
+  proposals Proposal[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  deletedAt DateTime?
+}
+
+model ProposalTemplate {
+  id          String            @id @default(uuid())
+  name        String
+  description String?
+  sections    TemplateSection[]
+  proposals   Proposal[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  deletedAt   DateTime?
+}
+
+model ReusableSection {
+  id          String            @id @default(uuid())
+  name        String
+  content     String            @db.Text
+  templates   TemplateSection[]
+  proposals   ProposalSection[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  deletedAt   DateTime?
+}
+
+model TemplateSection {
+  id         String           @id @default(uuid())
+  templateId String
+  template   ProposalTemplate @relation(fields: [templateId], references: [id])
+  sectionId  String
+  section    ReusableSection  @relation(fields: [sectionId], references: [id])
+  order      Int
+  isDefault  Boolean          @default(true)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  @@unique([templateId, sectionId])
+}
+
+model Proposal {
+  id         String            @id @default(uuid())
+  title      String
+  projectId  String
+  project    Project           @relation(fields: [projectId], references: [id])
+  templateId String
+  template   ProposalTemplate  @relation(fields: [templateId], references: [id])
+  status     String            @default("draft")
+  pdfPath    String?
+  sections   ProposalSection[]
+  costItems  CostItem[]
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+  deletedAt  DateTime?
+}
+
+model ProposalSection {
+  id          String          @id @default(uuid())
+  proposalId  String
+  proposal    Proposal        @relation(fields: [proposalId], references: [id])
+  sectionId   String
+  section     ReusableSection @relation(fields: [sectionId], references: [id])
+  order       Int
+  enabled     Boolean         @default(true)
+  content     String?         @db.Text
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@unique([proposalId, sectionId])
+}
+
+model CostItem {
+  id          String    @id @default(uuid())
+  proposalId  String
+  proposal    Proposal  @relation(fields: [proposalId], references: [id])
+  description String
+  quantity    Int       @default(1)
+  unitPrice   Float
+  total       Float
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+}

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" width="150" height="100">
+  <defs>
+    <linearGradient id="topEyelid" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1b3f6b" />
+      <stop offset="30%" stop-color="#2d6a9a" />
+      <stop offset="100%" stop-color="#6bcdee" />
+    </linearGradient>
+    <linearGradient id="bottomEyelid" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1b3f6b" />
+      <stop offset="30%" stop-color="#2d6a9a" />
+      <stop offset="100%" stop-color="#6bcdee" />
+    </linearGradient>
+    <radialGradient id="iris" cx="50%" cy="50%" r="50%">
+      <stop offset="10%" stop-color="#000000" />
+      <stop offset="12%" stop-color="#e3f0f7" />
+      <stop offset="25%" stop-color="#80c6e8" />
+      <stop offset="60%" stop-color="#4682b4" />
+      <stop offset="95%" stop-color="#1a426f" />
+    </radialGradient>
+  </defs>
+
+  <!-- Top Eyelid -->
+  <path d="M 70 95 C 100 50, 200 65, 270 70 C 230 85, 170 80, 140 70 C 110 60, 90 70, 70 95 Z" fill="url(#topEyelid)" />
+
+  <!-- Bottom Eyelid -->
+  <path d="M 30 135 C 60 110, 110 130, 200 115 C 170 145, 110 150, 60 140 C 45 137, 35 135, 30 135 Z" fill="url(#bottomEyelid)" />
+
+  <!-- Iris & Pupil -->
+  <circle cx="140" cy="100" r="40" fill="url(#iris)" />
+  <circle cx="140" cy="100" r="14" fill="#000000" />
+</svg>
