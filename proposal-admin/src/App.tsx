@@ -11,7 +11,13 @@ export default function App() {
 
     const [draftProposal, setDraftProposal] = useState<any>({
         title: '',
+        clientName: '',
+        intro: '',
         features: '',
+        techStack: '',
+        deliverables: '',
+        timeline: '',
+        changeRequest: '',
         projectId: '', // Hardcoded fallback for now if no project system on UI
         templateId: '',
         sections: [],
@@ -95,7 +101,13 @@ export default function App() {
             // Let's assume we skip Project creation if API isn't exactly built, but to be compliant we should pass a UUID.
             const payload = {
                 title: draftProposal.title || 'Test Proposal',
+                clientName: draftProposal.clientName,
+                intro: draftProposal.intro,
                 features: draftProposal.features,
+                techStack: draftProposal.techStack,
+                deliverables: draftProposal.deliverables,
+                timeline: draftProposal.timeline,
+                changeRequest: draftProposal.changeRequest,
                 projectId: '50690296-e3c8-4da0-91eb-e554e0a5ff94', // Real UUID from Supabase Seed
                 templateId: draftProposal.templateId,
                 sections: draftProposal.sections.map((s: any) => ({
@@ -239,19 +251,89 @@ export default function App() {
                                 </div>
                             )}
 
-                            {/* Step 3: Features */}
+                            {/* Step 3: Project Details */}
                             {draftProposal.templateId && (
                                 <div className="mb-8 animate-in slide-in-from-bottom-2 fade-in duration-300">
                                     <h3 className="text-lg font-semibold mb-4 text-slate-800 flex items-center gap-2">
                                         <span className="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-sm">3</span>
-                                        Features &amp; Functionalities
+                                        Project Specifics &amp; Details
                                     </h3>
-                                    <textarea
-                                        className="w-full border-slate-200 border rounded-lg p-4 min-h-[12rem] outline-none focus:border-blue-500 text-slate-700 resize-y"
-                                        placeholder="Type or paste the comprehensive features list here..."
-                                        value={draftProposal.features}
-                                        onChange={(e) => setDraftProposal({ ...draftProposal, features: e.target.value })}
-                                    />
+
+                                    <div className="space-y-6">
+                                        <div>
+                                            <label className="block text-sm font-medium text-slate-700 mb-1">Company / Client Name <span className="text-slate-400 font-normal">(Overrides CRM DB value)</span></label>
+                                            <input
+                                                className="w-full border-slate-200 border rounded-lg p-3 outline-none focus:border-blue-500 text-slate-700"
+                                                placeholder="e.g. Globex Corporation"
+                                                value={draftProposal.clientName}
+                                                onChange={(e) => setDraftProposal({ ...draftProposal, clientName: e.target.value })}
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm font-medium text-slate-700 mb-1">Introduction <span className="text-slate-400 font-normal">(Markdown supported)</span></label>
+                                            <textarea
+                                                className="w-full border-slate-200 border rounded-lg p-4 min-h-[6rem] outline-none focus:border-blue-500 text-slate-700 resize-y"
+                                                placeholder="Project background, goal, or introduction..."
+                                                value={draftProposal.intro}
+                                                onChange={(e) => setDraftProposal({ ...draftProposal, intro: e.target.value })}
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm font-medium text-slate-700 mb-1">Features &amp; Functionalities <span className="text-slate-400 font-normal">(Markdown supported)</span></label>
+                                            <textarea
+                                                className="w-full border-slate-200 border rounded-lg p-4 min-h-[12rem] outline-none focus:border-blue-500 text-slate-700 resize-y"
+                                                placeholder="Type or paste the comprehensive features list here..."
+                                                value={draftProposal.features}
+                                                onChange={(e) => setDraftProposal({ ...draftProposal, features: e.target.value })}
+                                            />
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-6">
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 mb-1">Tech Stack <span className="text-slate-400 font-normal">(Markdown)</span></label>
+                                                <textarea
+                                                    className="w-full border-slate-200 border rounded-lg p-4 min-h-[8rem] outline-none focus:border-blue-500 text-slate-700 resize-y"
+                                                    placeholder="- React Native&#10;- Node.js"
+                                                    value={draftProposal.techStack}
+                                                    onChange={(e) => setDraftProposal({ ...draftProposal, techStack: e.target.value })}
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 mb-1">Deliverables <span className="text-slate-400 font-normal">(Markdown)</span></label>
+                                                <textarea
+                                                    className="w-full border-slate-200 border rounded-lg p-4 min-h-[8rem] outline-none focus:border-blue-500 text-slate-700 resize-y"
+                                                    placeholder="- Source Code&#10;- Figma Designs"
+                                                    value={draftProposal.deliverables}
+                                                    onChange={(e) => setDraftProposal({ ...draftProposal, deliverables: e.target.value })}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-6">
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 mb-1">Timeline <span className="text-slate-400 font-normal">(Markdown)</span></label>
+                                                <textarea
+                                                    className="w-full border-slate-200 border rounded-lg p-4 min-h-[6rem] outline-none focus:border-blue-500 text-slate-700 resize-y"
+                                                    placeholder="Week 1: Design&#10;Week 2: Backend..."
+                                                    value={draftProposal.timeline}
+                                                    onChange={(e) => setDraftProposal({ ...draftProposal, timeline: e.target.value })}
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 mb-1">Change Request Mgmt <span className="text-slate-400 font-normal">(Markdown)</span></label>
+                                                <textarea
+                                                    className="w-full border-slate-200 border rounded-lg p-4 min-h-[6rem] outline-none focus:border-blue-500 text-slate-700 resize-y"
+                                                    placeholder="Any changes outside the initial scope..."
+                                                    value={draftProposal.changeRequest}
+                                                    onChange={(e) => setDraftProposal({ ...draftProposal, changeRequest: e.target.value })}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             )}
 

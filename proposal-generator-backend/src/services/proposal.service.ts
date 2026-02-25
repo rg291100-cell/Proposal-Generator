@@ -1,6 +1,7 @@
 import prisma from '../config/db';
 import { TemplateService, TemplateData } from './template.service';
 import { PdfService } from './pdf.service';
+import { marked } from 'marked';
 
 export class ProposalService {
     private templateService = new TemplateService();
@@ -42,11 +43,16 @@ export class ProposalService {
         }));
 
         const data: TemplateData = {
-            client_name: proposal.project.client.name,
+            client_name: (proposal as any).clientName || proposal.project.client.name,
             project_name: proposal.project.name,
             current_date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
             company_details: proposal.project.client.company || 'ArgosMob Tech & AI',
-            features: (proposal as any).features || '',
+            features: (proposal as any).features ? marked.parse((proposal as any).features as string) as string : '',
+            intro: (proposal as any).intro ? marked.parse((proposal as any).intro as string) as string : '',
+            techStack: (proposal as any).techStack ? marked.parse((proposal as any).techStack as string) as string : '',
+            deliverables: (proposal as any).deliverables ? marked.parse((proposal as any).deliverables as string) as string : '',
+            timeline: (proposal as any).timeline ? marked.parse((proposal as any).timeline as string) as string : '',
+            changeRequest: (proposal as any).changeRequest ? marked.parse((proposal as any).changeRequest as string) as string : '',
             cost_table: costTable,
             grand_total: grandTotal,
             amc_details: 'The standard AMC incorporates 12 months ongoing support beginning from deployment sign-off.',

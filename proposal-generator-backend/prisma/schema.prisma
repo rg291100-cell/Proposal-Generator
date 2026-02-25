@@ -76,6 +76,12 @@ model Proposal {
   pdfPath    String?
   sections   ProposalSection[]
   costItems  CostItem[]
+  clientName  String?
+  intro      String?           @db.Text
+  techStack  String?           @db.Text
+  deliverables String?         @db.Text
+  timeline   String?           @db.Text
+  changeRequest String?        @db.Text
   createdAt  DateTime          @default(now())
   updatedAt  DateTime          @updatedAt
   deletedAt  DateTime?

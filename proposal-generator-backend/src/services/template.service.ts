@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import Handlebars from 'handlebars';
+import { marked } from 'marked';
 
 export interface TemplateData {
     client_name: string;
@@ -13,6 +14,12 @@ export interface TemplateData {
     amc_details?: string;
     company_details?: string;
     features?: string;
+    clientName?: string;
+    intro?: string;
+    techStack?: string;
+    deliverables?: string;
+    timeline?: string;
+    changeRequest?: string;
     sections: Array<{
         name: string;
         enabled: boolean;

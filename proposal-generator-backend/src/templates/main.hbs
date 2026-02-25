@@ -6,11 +6,11 @@
   <title>Proposal - {{project_name}}</title>
   <style>
     :root {
-      --primary-color: #0d2a5a;
-      --secondary-color: #1f50a8;
-      --accent-color: #d1b463;
-      --text-color: #333;
-      --bg-color: #fff;
+      --primary-color: #334155;
+      --secondary-color: #475569;
+      --accent-color: #94a3b8;
+      --text-color: #1e293b;
+      --bg-color: #ffffff;
       --border-color: #e2e8f0;
     }
 
@@ -241,9 +241,8 @@
   <div class="cover-page">
     <div>
       <div style="margin-bottom: 30px;">
-        <img
-          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMDAgMjAwIiB3aWR0aD0iMTUwIiBoZWlnaHQ9IjEwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InRvcEV5ZWxpZCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMWIzZjZiIiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjMwJSIgc3RvcC1jb2xvcj0iIzJkNmE5YSIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNmJjZGVlIiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYm90dG9tRXllbGlkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMxYjNmNmIiIC8+CiAgICAgIDxzdG9wIG9mZnNldD0iMzAlIiBzdG9wLWNvbG9yPSIjMmQ2YTlhIiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM2YmNkZWUiIC8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPHJhZGlhbEdyYWRpZW50IGlkPSJpcmlzIiBjeD0iNTAlIiBjeT0iNTAlIiByPSI1MCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMiUiIHN0b3AtY29sb3I9IiNlM2YwZjciIC8+CiAgICAgIDxzdG9wIG9mZnNldD0iMjUlIiBzdG9wLWNvbG9yPSIjODBjNmU4IiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjYwJSIgc3RvcC1jb2xvcj0iIzQ2ODJiNCIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI5NSUiIHN0b3AtY29sb3I9IiMxYTQyNmYiIC8+CiAgICA8L3JhZGlhbEdyYWRpZW50PgogIDwvZGVmcz4KCiAgPCEtLSBUb3AgRXllbGlkIC0tPgogIDxwYXRoIGQ9Ik0gNzAgOTUgQyAxMDAgNTAsIDIwMCA2NSwgMjcwIDcwIEMgMjMwIDg1LCAxNzAgODAsIDE0MCA3MCBDIDExMCA2MCwgOTAgNzAsIDcwIDk1IFoiIGZpbGw9InVybCgjdG9wRXllbGlkKSIgLz4KCiAgPCEtLSBCb3R0b20gRXllbGlkIC0tPgogIDxwYXRoIGQ9Ik0gMzAgMTM1IEMgNjAgMTEwLCAxMTAgMTMwLCAyMDAgMTE1IEMgMTcwIDE0NSwgMTEwIDE1MCwgNjAgMTQwIEMgNDUgMTM3LCAzNSAxMzUsIDMwIDEzNSBaIiBmaWxsPSJ1cmwoI2JvdHRvbUV5ZWxpZCkiIC8+CgogIDwhLS0gSXJpcyAmIFB1cGlsIC0tPgogIDxjaXJjbGUgY3g9IjE0MCIgY3k9IjEwMCIgcj0iNDAiIGZpbGw9InVybCgjaXJpcykiIC8+CiAgPGNpcmNsZSBjeD0iMTQwIiBjeT0iMTAwIiByPSIxNCIgZmlsbD0iIzAwMDAwMCIgLz4KPC9zdmc+Cg=="
-          style="width:120px; height:auto; background: rgba(255,255,255,0.9); padding:10px; border-radius:10px;" />
+        <h2 style="color: white; font-size: 28px; letter-spacing: 2px; margin: 0; font-weight: 300;">ARGOSMOB TECH &amp;
+          AI</h2>
       </div>
       <div class="cover-title">Formal<br />Proposal</div>
       <div class="cover-subtitle">Prepared for {{client_name}}</div>
@@ -269,10 +268,18 @@
 
   <div class="page-break"></div>
 
-  <!-- Sections -->
+  <!-- Content Flow -->
+
+  {{#if intro}}
+  <div class="numbered-section page-break">
+    <h1 class="section-title">Introduction</h1>
+    <div class="section-content">{{{intro}}}</div>
+  </div>
+  {{/if}}
+
   {{#each sections}}
   {{#if enabled}}
-  <div class="numbered-section {{#if @first}} {{else}} page-break {{/if}}">
+  <div class="numbered-section {{#if @first}} {{^if ../intro}} page-break {{/if}} {{else}} page-break {{/if}}">
     <h1 class="section-title">{{name}}</h1>
     <div class="section-content">
       {{{content}}}
@@ -285,7 +292,28 @@
   {{#if features}}
   <div class="numbered-section page-break">
     <h1 class="section-title">Features &amp; Functionalities</h1>
-    <div class="section-content" style="white-space: pre-wrap;">{{features}}</div>
+    <div class="section-content">{{{features}}}</div>
+  </div>
+  {{/if}}
+
+  {{#if techStack}}
+  <div class="numbered-section page-break">
+    <h1 class="section-title">Tech Stack</h1>
+    <div class="section-content">{{{techStack}}}</div>
+  </div>
+  {{/if}}
+
+  {{#if deliverables}}
+  <div class="numbered-section page-break">
+    <h1 class="section-title">Deliverables</h1>
+    <div class="section-content">{{{deliverables}}}</div>
+  </div>
+  {{/if}}
+
+  {{#if timeline}}
+  <div class="numbered-section page-break">
+    <h1 class="section-title">Timeline</h1>
+    <div class="section-content">{{{timeline}}}</div>
   </div>
   {{/if}}
 
@@ -320,15 +348,40 @@
   </div>
   {{/if}}
 
-  <!-- AMC Details -->
-  {{#if amc_details}}
+  {{#if changeRequest}}
   <div class="numbered-section page-break">
-    <h1 class="section-title">AMC Details</h1>
+    <h1 class="section-title">Change Request Management</h1>
     <div class="section-content">
-      {{{amc_details}}}
+      {{{changeRequest}}}
     </div>
   </div>
   {{/if}}
+
+  <!-- Sign Off Section -->
+  <div class="numbered-section page-break">
+    <h1 class="section-title">Acceptance &amp; Sign-Off</h1>
+    <div class="section-content">
+      <p>By signing below, both parties agree to the terms, features, deliverables, timelines, and costs outlined in
+        this proposal.</p>
+
+      <table style="border: none; width: 100%; margin-top: 50px;">
+        <tr>
+          <td style="border: none; width: 50%;">
+            <strong>For {{client_name}}</strong><br /><br /><br />
+            ___________________________<br />
+            Name/Title<br />
+            Date:
+          </td>
+          <td style="border: none; width: 50%;">
+            <strong>For {{company_details}}</strong><br /><br /><br />
+            ___________________________<br />
+            Name/Title<br />
+            Date:
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
 
 </body>
 

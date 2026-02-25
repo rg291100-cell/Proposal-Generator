@@ -13,6 +13,12 @@ export const createProposal = async (req: Request, res: Response, next: NextFunc
             data: {
                 title: data.title,
                 features: data.features,
+                clientName: data.clientName,
+                intro: data.intro,
+                techStack: data.techStack,
+                deliverables: data.deliverables,
+                timeline: data.timeline,
+                changeRequest: data.changeRequest,
                 projectId: data.projectId,
                 templateId: data.templateId,
                 sections: {
